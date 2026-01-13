@@ -1,6 +1,6 @@
 import { EnvConfig } from "../types/env.types.js";
 import { logger } from "../utils/logger.js";
-import { PostgresConfig } from "./postgres.config2.js";
+import { PostgresConfig } from "./postgres.config.js";
 
 export async function getPostgresPool(env:EnvConfig){
   try {
