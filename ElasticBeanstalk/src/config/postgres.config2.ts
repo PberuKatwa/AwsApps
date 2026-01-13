@@ -6,16 +6,24 @@ import { EnvConfig } from "../types/env.types.js";
 
 
 export class PostgresConfig{
+  private readonly host: string;
+  private readonly port: string;
+  private readonly user: string;
+  private readonly password: string;
+  private readonly database: string;
 
   constructor(
-    private readonly env: EnvConfig
+    private readonly env: EnvConfig,
+    private readonly pool: Pool
   ) {
-    host: env.pgHost;
-    port: env.pgPort;
-    user: env.pgUser;
-    password: env.pgPassword;
-    database: env.pgDatabase;
+    this.host = env.pgHost;
+    this.port = env.pgPort;
+    this.user = env.pgUser;
+    this.password = env.pgPassword;
+    this.database = env.pgDatabase;
   }
+
+
 
 
 }
