@@ -1,5 +1,6 @@
 import dotenv from "dotenv";
 dotenv.config();
+import { EnvConfig } from "./types/env.types.js";
 
 function getEnv(key: string):string {
   try {
@@ -13,7 +14,7 @@ function getEnv(key: string):string {
   }
 }
 
-export const envConfig = {
+export const envConfig:EnvConfig = {
   environment:getEnv("ENVIRONMENT"),
   port: getEnv("PORT"),
   pgHost: getEnv("PG_HOST"),
