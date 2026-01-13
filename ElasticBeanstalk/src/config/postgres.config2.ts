@@ -7,7 +7,7 @@ import { EnvConfig } from "../types/env.types.js";
 
 export class PostgresConfig{
   private readonly host: string;
-  private readonly port: string;
+  private readonly port: number;
   private readonly user: string;
   private readonly password: string;
   private readonly database: string;
@@ -17,13 +17,29 @@ export class PostgresConfig{
     private readonly pool: Pool
   ) {
     this.host = env.pgHost;
-    this.port = env.pgPort;
+    this.port = Number(env.pgPort);
     this.user = env.pgUser;
     this.password = env.pgPassword;
     this.database = env.pgDatabase;
   }
 
+  async connect() {
+    try {
 
+      logger.info(`Connecting to PostgreSQL database: ${this.host}:${this.port}/${this.database}`);
+
+      const poolConfig: PoolConfig = {
+        user: this.user,
+        host: this.host,
+        database: this.database,
+        password: this.password,
+        port: this.port,
+      }
+
+    } catch (error) {
+      throw error;
+    }
+  }
 
 
 }
