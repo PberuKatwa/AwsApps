@@ -6,10 +6,18 @@ import { EnvConfig } from "../types/env.types.js";
 
 
 export class PostgresConfig{
+
   constructor(
     private readonly env: EnvConfig
   ) {
+    host: env.pgHost;
+    port: env.pgPort;
+    user: env.pgUser;
+    password: env.pgPassword;
+    database: env.pgDatabase;
   }
+
+
 }
 /**
  * Environment names your app supports
