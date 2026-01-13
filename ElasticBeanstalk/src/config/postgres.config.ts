@@ -1,34 +1,11 @@
 import { Pool, PoolConfig } from "pg";
 import { logger } from "../utils/logger.js";
+import type { BaseDbConfig,ProdDbConfig } from "../types/db.types.js";
 
 /**
  * Environment names your app supports
  */
 type Environment = "development" | "production";
-
-/**
- * Shared DB config shape
- */
-interface BaseDbConfig {
-  host?: string;
-  port?: number;
-  user?: string;
-  password?: string;
-  database?: string;
-  logging?: boolean | ((msg: string) => void);
-}
-
-/**
- * Production-only pool config
- */
-interface ProdDbConfig extends BaseDbConfig {
-  pool?: {
-    max?: number;
-    min?: number;
-    idleTimeoutMillis?: number;
-    connectionTimeoutMillis?: number;
-  };
-}
 
 /**
  * Get Postgres config based on NODE_ENV
@@ -84,11 +61,6 @@ export const connectPostgres = async (): Promise<Pool> => {
       `Connecting to ${environment} PostgreSQL database: ${config.host}:${config.port}/${config.database}`
     );
 
-    /**
-     * ⚠️ IMPORTANT FIX:
-     * pg.Pool does NOT accept `pool: { ... }`
-     * The pool options must be spread at top-level
-     */
     const poolConfig: PoolConfig = {
       user: config.user,
       host: config.host,
@@ -129,7 +101,4 @@ export const disconnectPostgres = async (): Promise<void> => {
   }
 };
 
-/**
- * Get active pool instance
- */
 export const getPool = (): Pool | undefined => pool;
