@@ -2,51 +2,49 @@ import { Pool, PoolConfig } from "pg";
 import { logger } from "../utils/logger.js";
 import { EnvConfig } from "../types/env.types.js";
 
+export class PostgresConfig {
 
-export class PostgresConfig{
+  private static pool: Pool | null = null;
 
-  private readonly host: string;
-  private readonly port: number;
-  private readonly user: string;
-  private readonly password: string;
-  private readonly database: string ;
-  public pool: Pool | null;
+  constructor(private readonly env: EnvConfig) {}
 
-  constructor(
-    private readonly env: EnvConfig
-  ) {
-    this.host = env.pgHost;
-    this.port = Number(env.pgPort);
-    this.user = env.pgUser;
-    this.password = env.pgPassword;
-    this.database = env.pgDatabase;
-    this.pool = null;
-  }
-
-  async connect() {
+  async connect(): Promise<Pool> {
     try {
 
-      logger.info(`Connecting to PostgreSQL database: ${this.host}:${this.port}/${this.database}`);
-
-      const poolConfig: PoolConfig = {
-        user: this.user,
-        host: this.host,
-        database: this.database,
-        password: this.password,
-        port: this.port,
+      if (PostgresConfig.pool) {
+        return PostgresConfig.pool;
       }
 
-      this.pool = new Pool(poolConfig)
+      logger.info(`Connecting to PostgreSQL: ${this.env.pgHost}:${this.env.pgPort}`);
 
-      const client = await this.pool.connect();
+      const poolConfig: PoolConfig = {
+        user: this.env.pgUser,
+        host: this.env.pgHost,
+        database: this.env.pgDatabase,
+        password: this.env.pgPassword,
+        port: Number(this.env.pgPort),
+      };
+
+      const pool = new Pool(poolConfig);
+
+      const client = await pool.connect();
       await client.query("SELECT 1");
       client.release();
 
+      PostgresConfig.pool = pool;
       logger.info(`PostgreSQL successfully connected`);
-      return this.pool;
-
+      return PostgresConfig.pool;
     } catch (error) {
       throw error;
     }
   }
+
+
+  static getPool(): Pool {
+    if (!PostgresConfig.pool) {
+      throw new Error("Postgres pool has not been initialized. Call connect() first.");
+    }
+    return PostgresConfig.pool;
+  }
+
 }
