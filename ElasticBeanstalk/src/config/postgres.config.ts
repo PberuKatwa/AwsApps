@@ -1,37 +1,38 @@
 import { Pool, PoolConfig } from "pg";
 import { logger } from "../utils/logger.js";
-import type { BaseDbConfig,ProdDbConfig } from "../types/db.types.js";
+import type { BaseDbConfig, ProdDbConfig } from "../types/db.types.js";
+import { config } from "../env.config.js";
 
 /**
  * Environment names your app supports
  */
 type Environment = "development" | "production";
 
+const environment = (config.environment) as Environment;
+
+
 /**
  * Get Postgres config based on NODE_ENV
  */
 export const getPostgresDatabaseConfig = (): BaseDbConfig | ProdDbConfig => {
-  const environment = (process.env.NODE_ENV ||
-    "development") as Environment;
-
   switch (environment) {
     case "development":
       return {
-        host: process.env.PG_HOST_DEV ?? "localhost",
-        port: Number(process.env.PG_PORT_DEV) || 5432,
-        user: process.env.PG_USER_DEV ?? "postgres",
-        password: process.env.PG_PASSWORD_DEV ?? "",
-        database: process.env.PG_DB_NAME_DEV ?? "joyful",
+        host: config.pgHost,
+        port: Number(config.pgPort),
+        user: config.pgUser,
+        password: config.pgPassword,
+        database: config.pgDatabase,
         logging: (msg: string) => logger.debug(msg),
       };
 
     case "production":
       return {
-        host: process.env.PG_HOST_PROD,
-        port: Number(process.env.PG_PORT_PROD) || 5432,
-        user: process.env.PG_USER_PROD,
-        password: process.env.PG_PASSWORD_PROD,
-        database: process.env.PG_DB_NAME_PROD,
+        host: config.pgHost,
+        port: Number(config.pgPort),
+        user: config.pgUser,
+        password: config.pgPassword,
+        database: config.pgDatabase,
         pool: {
           max: 5,
           min: 0,
@@ -53,8 +54,6 @@ let pool: Pool | undefined;
  */
 export const connectPostgres = async (): Promise<Pool> => {
   try {
-    const environment = (process.env.NODE_ENV ||
-      "development") as Environment;
     const config = getPostgresDatabaseConfig();
 
     logger.info(
