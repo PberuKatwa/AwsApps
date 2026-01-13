@@ -22,7 +22,7 @@ const startServer = async function () {
     app.listen(
       port,
       "0.0.0.0", function () {
-      console.log(`Server is listening in on port ${port}`);
+      logger.info(`Server is listening in on port ${port}`);
     });
 
     await getPostgresPool(envConfig)
