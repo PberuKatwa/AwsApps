@@ -2,14 +2,13 @@ import { Pool, PoolConfig } from "pg";
 import { logger } from "../utils/logger.js";
 import type { BaseDbConfig, ProdDbConfig } from "../types/db.types.js";
 import { envConfig } from "../env.config.js";
+import { EnvConfig } from "../types/env.types.js";
 
 
 export class PostgresConfig{
-  private readonly environment: string;
   constructor(
-    environment
+    private readonly env: EnvConfig
   ) {
-
   }
 }
 /**
