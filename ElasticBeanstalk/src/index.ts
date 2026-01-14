@@ -13,6 +13,9 @@ const port:number = Number(envConfig.port);
 const startServer = async function () {
   try {
 
+    await connectPostgres(envConfig);
+    await initializeModels();
+
     app.get("/health", function (req: Request, res: Response) {
       res.status(200).json({
         success: true,
@@ -25,9 +28,6 @@ const startServer = async function () {
       "0.0.0.0", function () {
       logger.info(`Server is listening in on port ${port}`);
     });
-
-    await connectPostgres(envConfig)
-    await initializeModels()
 
   } catch (error) {
     logger.error(`Error in server start up`, error)
