@@ -25,8 +25,17 @@ const startServer = async function () {
 
     app.post(
       `/create-properties`,
-      function (req: Request, res: Response) {
+      async function (req: Request, res: Response) {
         try {
+
+          const { name, price, location } = req.body;
+
+          const response = await propertyService.createProperty(name, price, location)
+
+          return res.status(200).json({
+            success: true,
+            message:response
+          })
 
         } catch (error) {
           logger.error(`Error in creating properties`, error)
