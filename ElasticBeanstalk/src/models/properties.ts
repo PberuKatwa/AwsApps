@@ -1,5 +1,6 @@
 import { Pool } from "pg";
 import { getPool } from "../config/index.js";
+import { logger } from "../utils/logger.js";
 
 const pgPool = getPool();
 
@@ -7,22 +8,31 @@ class Properties{
 
   constructor(private readonly pool: Pool) { }
 
-  createTable() {
+  async createTable() {
     try {
+
+      logger.warn(`Attempting to create properties table.`);
+
+      const query = `
+        CREATE TABLE IF NOT EXISTS properties(
+          id SERIAL PRIMARY KEY,
+          name TEXT NOT NULL,
+          price DECIMAL(10,2) NOT NULL,
+          location TEXT NOT NULL,
+          createdAt TIMESTAMPTZ,
+          updatedAt TIMESTAMPTZ
+        );
+      `
+
+      await this.pool.query(query)
+
+      return "properties"
 
     } catch (error) {
       throw error;
     }
   }
 }
-
-// const createGroupTable = async functionn () {
-
-//     const pool = getPool()
-
-//     const query = `
-
-//       CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 //       CREATE TABLE IF NOT EXISTS groups (
 //         id SERIAL PRIMARY KEY,
