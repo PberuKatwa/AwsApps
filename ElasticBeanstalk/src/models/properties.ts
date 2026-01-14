@@ -33,3 +33,7 @@ class Properties{
     }
   }
 }
+
+const propertyInstance = new Properties(pgPool)
+
+export default propertyInstance;
