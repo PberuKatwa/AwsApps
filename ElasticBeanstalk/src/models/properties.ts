@@ -16,7 +16,7 @@ class Properties{
   }
 }
 
-// const createGroupTable = async function () {
+// const createGroupTable = async functionn () {
 
 //     const pool = getPool()
 
