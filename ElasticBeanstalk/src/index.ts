@@ -13,8 +13,8 @@ const port:number = Number(envConfig.port);
 const startServer = async function () {
   try {
 
-    await connectPostgres(envConfig);
-    await initializeModels();
+    const pgPool = await connectPostgres(envConfig);
+    await initializeModels(pgPool);
 
     app.get("/health", function (req: Request, res: Response) {
       res.status(200).json({

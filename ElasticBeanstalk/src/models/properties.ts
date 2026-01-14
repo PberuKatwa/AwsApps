@@ -1,10 +1,7 @@
 import { Pool } from "pg";
-import { getPool } from "../config/index.js";
 import { logger } from "../utils/logger.js";
 
-const pgPool = getPool();
-
-class Properties{
+export class Properties{
 
   constructor(private readonly pool: Pool) { }
 
@@ -36,6 +33,6 @@ class Properties{
   }
 }
 
-const propertyInstance = new Properties(pgPool)
+// const propertyInstance = new Properties(pgPool)
 
-export default propertyInstance;
+// export default propertyInstance;

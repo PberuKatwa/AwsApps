@@ -1,9 +1,15 @@
 import { logger } from "../utils/logger.js";
-import propertyInstance from "./properties.js";
+import { Properties } from "./properties.js";
+import { Pool } from "pg";
 
-export async function initializeModels() {
+export let propertyService: Properties;
+
+export async function initializeModels(pgPool:Pool) {
   try {
-    const properties = await propertyInstance.createTable()
+
+    propertyService = new Properties(pgPool)
+    await propertyService.createTable()
+
   } catch (error) {
     logger.error(`Error in initalizing models`,error)
   }
