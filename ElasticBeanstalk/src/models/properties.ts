@@ -31,8 +31,13 @@ export class Properties{
       throw error;
     }
   }
+
+  async createProperty() {
+    try {
+
+    } catch (error) {
+      throw error;
+    }
+  }
+
 }
-
-// const propertyInstance = new Properties(pgPool)
-
-// export default propertyInstance;
