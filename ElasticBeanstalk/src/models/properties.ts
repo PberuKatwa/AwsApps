@@ -24,9 +24,11 @@ class Properties{
         );
       `
 
-      await this.pool.query(query)
+      await this.pool.query(query);
 
-      return "properties"
+      logger.info(`Successfully intialized propeties table`);
+
+      return "properties";
 
     } catch (error) {
       throw error;
