@@ -2,7 +2,7 @@ import express from "express";
 import type { Request, Response } from "express";
 import { logger } from "./utils/logger.js";
 import { envConfig } from "./env.config.js";
-import { getPostgresPool } from "./config/index.js";
+import { connectPostgres } from "./config/index.js";
 
 const app = express();
 
@@ -25,7 +25,7 @@ const startServer = async function () {
       logger.info(`Server is listening in on port ${port}`);
     });
 
-    await getPostgresPool(envConfig)
+    await connectPostgres(envConfig)
 
   } catch (error) {
     logger.error(`Error in server start up`, error)
