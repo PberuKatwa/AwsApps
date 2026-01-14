@@ -46,8 +46,8 @@ export class Properties{
       const result = await this.pool.query(query, [name, price, location]);
       const property = result.rows[0];
 
-      logger.info(`Successfully created a property with ${name}, ${price}, ${location}`);
-      return `Property table updated with name${name}, ${price}, ${location}`;
+      logger.info(`Successfully created property ${property}`);
+      return property;
 
     } catch (error) {
       throw error;
