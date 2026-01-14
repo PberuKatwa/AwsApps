@@ -38,12 +38,12 @@ export class Properties{
       logger.warn(`Attempting to create a property with ${name}, ${price}, ${location}`);
 
       const query = `
-        INSERT INTO properties ( name, price, location )
-        VALUES( $1, $2, $3 )
+        INSERT INTO properties ( name, price, location, createdAt, updatedAt )
+        VALUES( $1, $2, $3, $4, $5 )
         RETURNING id, name, price, location, createdAt;
       `
 
-      const result = await this.pool.query(query, [name, price, location]);
+      const result = await this.pool.query(query, [name, price, location, new Date(), new Date()]);
       const property = result.rows[0];
 
       logger.info(`Successfully created property ${property}`);
