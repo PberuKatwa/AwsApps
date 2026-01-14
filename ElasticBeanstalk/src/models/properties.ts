@@ -39,11 +39,14 @@ export class Properties{
 
       const query = `
         INSERT INTO properties ( name, price, location )
-        VALUES( ${name}, ${price}, ${location} );
+        VALUES( $1, $2, $3 )
+        RETURNING id, name, price, location, createdAt;
       `
 
-      logger.info(`Successsfully created a property with ${name}, ${price}, ${location}`);
-      await this.pool.query(query);
+      const result = await this.pool.query(query, [name, price, location]);
+      const property = result.rows[0];
+
+      logger.info(`Successfully created a property with ${name}, ${price}, ${location}`);
       return `Property table updated with name${name}, ${price}, ${location}`;
 
     } catch (error) {
