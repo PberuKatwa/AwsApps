@@ -3,7 +3,7 @@ import type { Request, Response } from "express";
 import { logger } from "./utils/logger.js";
 import { envConfig } from "./env.config.js";
 import { connectPostgres } from "./config/index.js";
-import { initializeModels } from "./models/init.js";
+import { initializeModels, propertyService } from "./models/init.js";
 
 const app = express();
 
@@ -22,6 +22,21 @@ const startServer = async function () {
         message: "Server is Healthy",
       });
     });
+
+    app.post(
+      `/create-properties`,
+      function (req: Request, res: Response) {
+        try {
+
+        } catch (error) {
+          logger.error(`Error in creating properties`, error)
+          return res.status(200).json({
+            success: false,
+            message:`${error}`
+          })
+        }
+      }
+    )
 
     app.listen(
       port,
