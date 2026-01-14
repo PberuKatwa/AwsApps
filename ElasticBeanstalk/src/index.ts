@@ -34,7 +34,8 @@ const startServer = async function () {
 
           return res.status(200).json({
             success: true,
-            message:`Successfully created property`
+            message: `Successfully created property`,
+            data:response
           })
 
         } catch (error) {
