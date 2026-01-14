@@ -42,6 +42,7 @@ export class Properties{
         VALUES( ${name}, ${price}, ${location} );
       `
 
+      logger.info(`Successsfully created a property with ${name}, ${price}, ${location}`);
       await this.pool.query(query);
 
       return `Property table updated with name${name}, ${price}, ${location}`;
