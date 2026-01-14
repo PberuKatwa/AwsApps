@@ -23,7 +23,7 @@ export class Properties{
 
       await this.pool.query(query);
 
-      logger.info(`Successfully intialized propeties table`);
+      logger.info(`Successsfully intialized propeties table`);
 
       return "properties";
 
