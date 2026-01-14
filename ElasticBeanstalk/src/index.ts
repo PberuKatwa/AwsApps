@@ -3,6 +3,7 @@ import type { Request, Response } from "express";
 import { logger } from "./utils/logger.js";
 import { envConfig } from "./env.config.js";
 import { connectPostgres } from "./config/index.js";
+import { initializeModels } from "./models/init.js";
 
 const app = express();
 
@@ -26,6 +27,7 @@ const startServer = async function () {
     });
 
     await connectPostgres(envConfig)
+    await initializeModels()
 
   } catch (error) {
     logger.error(`Error in server start up`, error)
